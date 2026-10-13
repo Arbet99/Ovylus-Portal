@@ -35,13 +35,13 @@ export const topics = [
 export const articles: Article[] = [
   {
     id: "era-agent",
-    title: "Era AI agent: ketika teknologi mulai mengambil peran.",
+    title: "Apa itu AI agent dan bagaimana cara kerjanya?",
     description:
-      "Dari sekadar menjawab pertanyaan menjadi rekan yang membantu menyelesaikan pekerjaan. Kenali babak baru kecerdasan buatan.",
+      "AI agent dapat menyusun langkah dan menggunakan alat untuk menjalankan tugas. Pelajari contohnya, cara kerjanya, dan batas kemampuannya.",
     category: "Berita AI",
     topic: "Model AI",
     visual: "robot",
-    label: "PERSPEKTIF",
+    label: "PANDUAN AI",
     meta: "3 menit baca",
     author: "Redaksi Ovylus",
     source: "https://www.anthropic.com/research/building-effective-agents",
@@ -54,12 +54,12 @@ export const articles: Article[] = [
   },
   {
     id: "reasoning",
-    title: "Bukan hanya lebih cepat. AI mulai berpikir lebih jauh.",
+    title: "Bagaimana model AI menyelesaikan soal yang rumit?",
     description:
-      "Memahami reasoning, kemampuan model untuk mengurai masalah menjadi langkah-langkah yang lebih terarah.",
+      "Kenali model reasoning: model AI yang dirancang untuk menyelesaikan masalah dalam beberapa langkah.",
     category: "Berita AI",
     topic: "Model AI",
-    visual: "chrome",
+    visual: "hand",
     label: "MODEL AI",
     meta: "2 menit baca",
     author: "Redaksi Ovylus",
@@ -72,13 +72,13 @@ export const articles: Article[] = [
   },
   {
     id: "creative-tools",
-    title: "Ruang kerja baru untuk ide-ide yang besar.",
+    title: "Memilih alat AI untuk desain dan pembuatan konten",
     description:
-      "Cara memilih tools AI yang membantu proses kreatif, dari ide pertama hingga hasil akhir.",
+      "Bandingkan alat pembuat gambar berdasarkan kebutuhan, kualitas hasil, dan izin penggunaan aset.",
     category: "Berita AI",
     topic: "Tools",
-    visual: "workspace",
-    label: "TOOLS & KREATIVITAS",
+    visual: "studio",
+    label: "ALAT KREATIF",
     meta: "2 menit baca",
     author: "Redaksi Ovylus",
     source: "https://www.adobe.com/products/firefly.html",
@@ -90,9 +90,9 @@ export const articles: Article[] = [
   },
   {
     id: "small-models",
-    title: "Model kecil, kemungkinan yang semakin besar.",
+    title: "Kapan model AI berukuran kecil lebih cocok digunakan?",
     description:
-      "Mengapa efisiensi menjadi bagian penting dari percakapan masa depan AI.",
+      "Ukuran model memengaruhi kebutuhan memori, kecepatan, dan biaya. Ini yang perlu dipertimbangkan.",
     category: "Berita AI",
     topic: "Riset",
     visual: "chip",
@@ -101,14 +101,14 @@ export const articles: Article[] = [
     author: "Redaksi Ovylus",
     source: "https://huggingface.co/docs/transformers/index",
     paragraphs: [
-      "Ukuran model hanyalah salah satu faktor yang menentukan kecocokan sebuah sistem. Untuk tugas tertentu, model lebih kecil bisa menjadi pilihan menarik karena kebutuhan memori dan latensinya.",
+      "Ukuran model hanyalah salah satu faktor yang menentukan kecocokan sebuah sistem. Untuk tugas tertentu, model lebih kecil bisa menjadi pilihan menarik karena kebutuhan memori dan waktu responsnya.",
       "Evaluasi tetap perlu dilakukan menggunakan data yang mewakili kondisi penggunaan. Pertimbangkan akurasi, perangkat yang tersedia, lisensi, dan biaya pemeliharaan sebelum membuat keputusan.",
       "Konten ini adalah contoh editorial tentang efisiensi model. Dokumentasi Transformers dapat menjadi titik awal untuk mempelajari berbagai arsitektur dan cara menjalankannya.",
     ],
   },
   {
     id: "ai-governance",
-    title: "Inovasi butuh arah. Mengenal tata kelola AI.",
+    title: "Siapa yang bertanggung jawab atas penggunaan AI?",
     description:
       "Transparansi, privasi, dan tanggung jawab dalam membangun produk berbasis AI.",
     category: "Berita AI",
@@ -126,13 +126,13 @@ export const articles: Article[] = [
   },
   {
     id: "llm-video",
-    title: "Satu jam untuk memahami dunia large language model.",
+    title: "Mengenal model bahasa besar bersama Andrej Karpathy",
     description:
       "Pengantar LLM dari Andrej Karpathy, dengan rangkuman berbahasa Indonesia.",
     category: "Video AI",
     topic: "Model AI",
-    visual: "terminal",
-    label: "DEEP DIVE",
+    visual: "studio",
+    label: "PENJELASAN LENGKAP",
     meta: "59 menit",
     author: "Andrej Karpathy",
     source: "https://www.youtube.com/watch?v=zjkBMFhNj_g",
@@ -146,11 +146,11 @@ export const articles: Article[] = [
     id: "neural-video",
     title: "Apa yang sebenarnya dipelajari neural network?",
     description:
-      "Penjelasan visual tentang jaringan saraf yang membuat konsep abstrak terasa lebih dekat.",
+      "Lihat bagaimana jaringan saraf belajar mengenali angka dari contoh gambar.",
     category: "Video AI",
     topic: "Riset",
     visual: "network",
-    label: "VISUAL EXPLAINER",
+    label: "PENJELASAN VISUAL",
     meta: "19 menit",
     author: "3Blue1Brown",
     source: "https://www.youtube.com/watch?v=aircAruvnKk",
@@ -162,9 +162,9 @@ export const articles: Article[] = [
   },
   {
     id: "attention-video",
-    title: "Attention: bagian kecil di balik lompatan besar AI.",
+    title: "Bagaimana AI mengenali hubungan antarkata?",
     description:
-      "Mengenal mekanisme attention melalui penjelasan visual yang intuitif.",
+      "Video tentang attention, mekanisme yang membantu model menentukan bagian teks yang relevan.",
     category: "Video AI",
     topic: "Riset",
     visual: "chrome",
@@ -180,9 +180,9 @@ export const articles: Article[] = [
   },
   {
     id: "workflow",
-    title: "Pekerjaan berulang? Saatnya buat alurnya.",
+    title: "Mencatat formulir ke spreadsheet secara otomatis",
     description:
-      "Bangun workflow pertama untuk menghubungkan formulir, spreadsheet, dan notifikasi.",
+      "Pelajari alur sederhana di n8n: terima formulir, catat data, lalu kirim pemberitahuan.",
     category: "Automation",
     topic: "Bisnis",
     visual: "workflow",
@@ -192,19 +192,19 @@ export const articles: Article[] = [
     source: "https://docs.n8n.io/try-it-out/tutorial-first-workflow/",
     paragraphs: [
       "Pilih satu proses berulang dengan masukan dan hasil yang jelas, misalnya mencatat formulir masuk ke spreadsheet. Tulis langkah manualnya terlebih dahulu agar bagian yang perlu diotomatisasi terlihat.",
-      "Dalam n8n, mulai dari trigger, tambahkan node untuk mengolah data, lalu hubungkan tujuan akhirnya. Uji menggunakan data contoh dan periksa setiap output sebelum mengaktifkan workflow.",
+      "Dalam n8n, pilih pemicu (trigger), tambahkan langkah (node) untuk mengolah data, lalu hubungkan tujuan akhirnya. Uji menggunakan data contoh dan periksa setiap output sebelum mengaktifkan workflow.",
       "Tambahkan penanganan error dan pertimbangkan akses data. Untuk tahap pertama, hindari tindakan yang sulit dibatalkan. Dokumentasi sumber menyediakan tutorial resmi langkah demi langkah.",
     ],
   },
   {
     id: "research-flow",
-    title: "Dari tumpukan dokumen ke ringkasan yang berguna.",
+    title: "Meringkas dokumen tanpa kehilangan sumbernya",
     description:
-      "Rancang asisten riset sederhana dengan tahapan verifikasi sumber.",
+      "Susun alur membaca dan meringkas dokumen, lalu periksa setiap ringkasan dengan sumber aslinya.",
     category: "Automation",
     topic: "Tools",
     visual: "workspace",
-    label: "WORKFLOW · MENENGAH",
+    label: "ALUR KERJA · MENENGAH",
     meta: "2 menit baca",
     author: "Ovylus Lab",
     source: "https://docs.n8n.io/advanced-ai/",
@@ -216,13 +216,13 @@ export const articles: Article[] = [
   },
   {
     id: "business-flow",
-    title: "Lebih sedikit admin. Lebih banyak waktu untuk bisnis.",
+    title: "Memilih tugas bisnis yang bisa diotomatisasi",
     description:
-      "Temukan proses bisnis yang paling tepat untuk mulai diotomatisasi.",
+      "Mulai dari pencatatan data atau pengingat internal. Bandingkan waktu yang dihemat dengan biaya perawatannya.",
     category: "Automation",
     topic: "Bisnis",
     visual: "chip",
-    label: "USE CASE · BISNIS",
+    label: "PANDUAN BISNIS",
     meta: "2 menit baca",
     author: "Ovylus Lab",
     source: "https://docs.n8n.io/workflows/",
@@ -234,7 +234,7 @@ export const articles: Article[] = [
   },
   {
     id: "ai-basics",
-    title: "Mulai dari sini: kenalan dengan AI.",
+    title: "Dasar AI: istilah, cara kerja, dan keterbatasannya",
     description:
       "Pahami istilah penting, cara kerja, dan batas kemampuan AI dalam panduan pengantar.",
     category: "Belajar AI",
@@ -252,7 +252,7 @@ export const articles: Article[] = [
   },
   {
     id: "prompting",
-    title: "Prompt yang jelas, hasil yang lebih terarah.",
+    title: "Cara menulis instruksi yang jelas untuk AI",
     description:
       "Belajar menyusun instruksi dengan konteks, contoh, dan format hasil yang jelas.",
     category: "Belajar AI",
@@ -270,7 +270,7 @@ export const articles: Article[] = [
   },
   {
     id: "first-agent",
-    title: "Merancang AI agent pertama kamu.",
+    title: "Langkah awal merancang AI agent",
     description:
       "Kenali hubungan model, tools, memori, dan aturan berhenti sebelum membangun agent.",
     category: "Belajar AI",
@@ -291,26 +291,26 @@ export const articles: Article[] = [
 export const creators = [
   {
     name: "Andrej Karpathy",
-    role: "LLM & AI Engineering",
+    role: "Model bahasa & pemrograman AI",
     initials: "AK",
     color: "orange",
     url: "https://www.youtube.com/@AndrejKarpathy",
-    mark: "EDUCATOR",
+    mark: "PENGAJAR AI",
   },
   {
     name: "3Blue1Brown",
-    role: "Matematika, divisualisasikan.",
+    role: "Matematika lewat penjelasan visual",
     initials: "3B",
     color: "black",
     url: "https://www.youtube.com/@3blue1brown",
-    mark: "VISUAL LEARNING",
+    mark: "BELAJAR VISUAL",
   },
   {
     name: "Hugging Face",
-    role: "Open source & komunitas AI",
+    role: "Model terbuka & panduan praktik",
     initials: "HF",
     color: "gray",
     url: "https://huggingface.co/learn",
-    mark: "COMMUNITY",
+    mark: "KOMUNITAS",
   },
 ];

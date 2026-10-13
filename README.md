@@ -33,6 +33,8 @@ Screenshot hasil aplikasi dapat dilihat langsung di GitHub:
 
 Screenshot ini merupakan pratinjau visual. Untuk mencoba interaksi, jalankan aplikasi mengikuti panduan di bawah; website belum di-deploy ke hosting.
 
+Catatan penggabungan referensi dan bahasa antarmuka: [Keputusan desain](docs/design-notes.md).
+
 ## Menjalankan
 
 Gunakan Node.js 22.12+ (divalidasi dengan Node.js 24) dan npm.
@@ -59,6 +61,9 @@ Output statis berada di `dist/` dan dapat diterbitkan pada hosting statis. Deplo
 - Simpan konten serta tema terang/gelap yang bertahan di browser melalui `localStorage`.
 - Kurasi video; pemutar YouTube dimuat hanya setelah pengguna menekan putar.
 - Bagian automation, panduan belajar, kreator, dan informasi editorial/privasi.
+- Deretan video yang dapat digeser dengan tombol, sentuhan, atau trackpad.
+- Pilihan kebutuhan belajar yang menampilkan rekomendasi bacaan terkait.
+- Transisi masuk bagian halaman, respons hover poster, gerakan ringan pada gambar hero, serta animasi bookmark dan diagram.
 - Dukungan `prefers-reduced-motion`, skip link, dan indikator fokus.
 
 ## Konten dan aset
@@ -67,8 +72,8 @@ Output statis berada di `dist/` dan dapat diterbitkan pada hosting statis. Deplo
 - `src/App.tsx`: komponen dan interaksi homepage.
 - `src/styles.css`: desain responsif dan kedua tema.
 - `public/images/ovylus-logo.png` dan `public/favicon.png`: salinan aset merek yang tersedia di repository. Commit `01acb3b` berjudul “logo terbaru” memiliki tree yang sama dengan commit sebelumnya.
-- `public/images/hero-robot.png` dan `chrome-knot.png`: gambar editorial yang dibuat dengan AI untuk desain ini.
-- `public/fonts/`: Nasalization dan CCMetcon dari aset repository, dipakai secara selektif. Manrope untuk teks utama disediakan lokal oleh `@fontsource-variable/manrope`.
+- `public/images/`: logo serta ilustrasi editorial robot, tangan mekanis, ruang kerja, dan bentuk krom. Ilustrasi dibuat dengan AI untuk desain ini; bukan foto dokumentasi peristiwa atau orang tertentu.
+- `public/fonts/`: Nasalization dan CCMetcon dari aset repository, Nasalization dipakai pada monogram; berkas CCMetcon tetap tersedia. Font utama mengikuti referensi baru: Space Grotesk untuk judul dan Plus Jakarta Sans untuk teks. Keduanya disediakan lokal melalui paket `@fontsource-variable`.
 
 Tidak ada backend, akun, API berita, atau kredensial yang diperlukan. Simpanan hanya berada di perangkat pengguna. Pemutaran video dan sumber eksternal memerlukan internet; ketersediaan video mengikuti YouTube. Tautan kreator mengarah ke kanal asli.
 
@@ -85,7 +90,7 @@ Jika Chromium sudah tersedia di sistem (seperti pada cloud environment ini):
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm test
 ```
 
-Playwright menjalankan skenario desktop dan mobile untuk aset, error runtime, overflow, tema, carousel, dialog, pencarian, filter, bookmark, navigasi, dan reset privasi. Pengujian embed memalsukan respons YouTube untuk memeriksa pemuatan atas tindakan pengguna; pengujian ini tidak menyatakan bahwa playback eksternal telah diverifikasi.
+Playwright menjalankan skenario desktop dan mobile untuk aset, error runtime, overflow, tema, carousel, dialog, pencarian, filter, bookmark, navigasi, reset privasi, kontrol video, rekomendasi belajar, gerakan pointer, dan reduced motion. Pengujian embed memalsukan respons YouTube untuk memeriksa pemuatan atas tindakan pengguna; pengujian ini tidak menyatakan bahwa playback eksternal telah diverifikasi.
 
 ## Cloud environment
 

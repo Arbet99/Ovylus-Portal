@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ArrowDown,
+  BookOpen,
+  Cpu,
+  Layers3,
+  MessagesSquare,
   ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
@@ -70,9 +74,9 @@ function Artwork({
 }) {
   return (
     <div className={`artwork art-${kind}`} aria-hidden="true">
-      {(kind === "robot" || kind === "chrome") && (
+      {["robot", "chrome", "hand", "studio"].includes(kind) && (
         <img
-          src={`/images/${kind === "robot" ? "hero-robot" : "chrome-knot"}.png`}
+          src={`/images/${({ robot: "hero-robot", chrome: "chrome-knot", hand: "robotic-hand", studio: "editorial-studio" } as Record<string, string>)[kind]}.png`}
           alt=""
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
@@ -89,11 +93,11 @@ function Artwork({
               <span className="window-name">OVYLUS / STUDIO</span>
             </div>
             <div className="window-content">
-              <span className="tiny-label">MAKE ROOM FOR</span>
+              <span className="tiny-label">ATUR IDE</span>
               <strong>
-                big
+                susun
                 <br />
-                ideas
+                ide
                 <span>
                   <KineticStar />
                 </span>
@@ -107,18 +111,18 @@ function Artwork({
             </div>
             <MousePointer2 className="art-cursor" size={37} />
           </div>
-          <span className="art-coordinate">CREATE. ITERATE. REPEAT.</span>
+          <span className="art-coordinate">BUAT. PERIKSA. PERBAIKI.</span>
         </>
       )}
       {kind === "chip" && (
         <>
           <div className="circuit-lines" />
           <div className="microchip">
-            <span>NEURAL ENGINE</span>
+            <span>MODEL AI</span>
             <strong>AI</strong>
-            <small>SMALL IS POWERFUL.</small>
+            <small>MODEL RINGKAS</small>
           </div>
-          <span className="art-coordinate">NEXT GEN / 001</span>
+          <span className="art-coordinate">UKURAN / EFISIENSI</span>
         </>
       )}
       {kind === "terminal" && (
@@ -127,16 +131,16 @@ function Artwork({
             <span />
             <span />
             <span />
-            <span>understanding_ai.md</span>
+            <span>contoh_instruksi.txt</span>
           </div>
           <div className="terminal-copy">
             <span>&gt;_</span>
             <strong>
-              hello,
+              tulis tugas,
               <br />
-              intelligence<span>_</span>
+              beri konteks<span>_</span>
             </strong>
-            <small>// a new way to understand</small>
+            <small>// jelaskan hasil yang kamu butuhkan</small>
           </div>
           <AudioLines className="terminal-wave" size={70} strokeWidth={1} />
         </>
@@ -172,7 +176,7 @@ function Artwork({
               />
             ))}
           </svg>
-          <span className="art-coordinate">CONNECTED BY INTELLIGENCE.</span>
+          <span className="art-coordinate">BELAJAR DARI DATA</span>
         </>
       )}
       {kind === "workflow" && (
@@ -194,7 +198,9 @@ function Artwork({
               <small>DONE</small>
             </div>
           </div>
-          <span className="art-coordinate">LESS WORK. MORE FLOW.</span>
+          <span className="art-coordinate">
+            FORMULIR → DATA → PEMBERITAHUAN
+          </span>
         </>
       )}
       {kind === "governance" && (
@@ -203,13 +209,13 @@ function Artwork({
             <KineticStar />
           </span>
           <strong className="governance-copy">
-            WITH
+            DATA
             <br />
-            GREAT
+            DAN
             <br />
-            POWER.
+            TANGGUNG JAWAB
           </strong>
-          <span className="art-coordinate">AI / RESPONSIBILITY</span>
+          <span className="art-coordinate">AI / TANGGUNG JAWAB</span>
         </>
       )}
     </div>
@@ -338,7 +344,7 @@ function ArticleDetail({
           target="_blank"
           rel="noopener noreferrer"
         >
-          {article.videoId ? "Tonton di YouTube" : "Jelajahi sumber asli"}
+          {article.videoId ? "Tonton di YouTube" : "Baca sumber asli"}
           <ExternalLink size={16} />
         </a>
         {article.videoId && (
@@ -367,7 +373,7 @@ function ContentCard({
 }) {
   return (
     <article
-      className="content-card"
+      className={`content-card ${article.videoId ? "video-card" : "poster-card"}`}
       style={{ "--card-index": index } as React.CSSProperties}
     >
       <div className="card-art">
@@ -377,20 +383,21 @@ function ContentCard({
           aria-label={`Buka ${article.title}`}
         >
           <Artwork kind={article.visual} />
-          {article.videoId && (
+          <span className="image-tag">{article.label}</span>
+          {article.videoId ? (
             <span className="video-play">
-              <Play size={18} fill="currentColor" />
+              <Play size={23} fill="currentColor" />
+              <span>Tonton video</span>
+            </span>
+          ) : (
+            <span className="poster-open">
+              Baca artikel
+              <ArrowUpRight size={18} />
             </span>
           )}
-          <span className="image-tag">
-            {article.videoId ? (
-              <>
-                <Play size={10} fill="currentColor" />
-                {article.meta}
-              </>
-            ) : (
-              article.category
-            )}
+          <span className="poster-time">
+            <Clock3 size={12} />
+            {article.meta}
           </span>
         </button>
         <button
@@ -399,26 +406,41 @@ function ContentCard({
           aria-pressed={saved}
           onClick={onSave}
         >
-          <Bookmark size={15} fill={saved ? "currentColor" : "none"} />
+          <Bookmark size={16} fill={saved ? "currentColor" : "none"} />
         </button>
       </div>
       <div className="card-body">
         <span className="card-label">
-          <span />
-          {article.label}
+          {article.author}
+          <span> / </span>
+          {article.topic}
         </span>
         <h3>
           <button onClick={onOpen}>{article.title}</button>
         </h3>
-        <div className="card-meta">
-          <span>{article.author}</span>
-          <span className="meta-dot">·</span>
-          <span>{article.videoId ? "Video" : article.meta}</span>
-        </div>
+        <p className="card-description">{article.description}</p>
       </div>
     </article>
   );
 }
+
+const interests = [
+  {
+    id: "dasar",
+    label: "Saya baru mengenal AI",
+    ids: ["ai-basics", "llm-video"],
+  },
+  {
+    id: "kerja",
+    label: "Saya ingin menghemat waktu kerja",
+    ids: ["workflow", "research-flow"],
+  },
+  {
+    id: "teknis",
+    label: "Saya ingin memahami cara kerjanya",
+    ids: ["neural-video", "first-agent"],
+  },
+];
 
 export default function App() {
   const [theme, setTheme] = useState(() =>
@@ -437,9 +459,23 @@ export default function App() {
   const [selected, setSelected] = useState<Article | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [toast, setToast] = useState("");
+  const [interest, setInterest] = useState("dasar");
+  const [railState, setRailState] = useState({ previous: false, next: true });
   const searchRef = useRef<HTMLInputElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
+  const tiltFrame = useRef<number>(0);
   const featured = [articles[0], articles[1], articles[8]];
   const hero = featured[slide];
+  const heroHeadlines = [
+    ["AI agent bisa", "membantu apa?"],
+    ["Bagaimana AI", "menyelesaikan soal?"],
+    ["Otomatisasi tugas,", "mulai dari mana?"],
+  ];
+  const heroSummaries = [
+    "Kenali cara AI menyusun langkah, menggunakan alat, dan menjalankan tugas. Pelajari juga kapan hasilnya perlu diperiksa.",
+    "Model reasoning dirancang untuk mengerjakan masalah dalam beberapa langkah. Pahami kegunaannya dan cara menilai hasilnya.",
+    "Mulai dari satu pekerjaan sederhana: mencatat formulir ke spreadsheet dan mengirim pemberitahuan dengan n8n.",
+  ];
   const isFiltered = !!query.trim() || topic !== "Semua" || savedOnly;
   const visibleArticles = (
     isFiltered
@@ -458,10 +494,13 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? "#040404" : "#FBFBFB");
     try {
       localStorage.setItem("ovylus-theme", theme);
     } catch {
-      /* Theme still works for this session. */
+      /* Session theme remains usable. */
     }
   }, [theme]);
   useEffect(() => {
@@ -482,6 +521,67 @@ export default function App() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }),
+      { threshold: 0.06 },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => {
+      el.classList.add("reveal-ready");
+      observer.observe(el);
+    });
+    return () => {
+      observer.disconnect();
+      document
+        .querySelectorAll(".reveal-ready")
+        .forEach((el) => el.classList.remove("reveal-ready"));
+    };
+  }, []);
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const distance =
+          document.documentElement.scrollHeight - window.innerHeight;
+        document.documentElement.style.setProperty(
+          "--page-progress",
+          `${distance > 0 ? (window.scrollY / distance) * 100 : 0}%`,
+        );
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", update);
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(tiltFrame.current);
+    };
+  }, []);
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const update = () =>
+      setRailState({
+        previous: rail.scrollLeft > 4,
+        next: rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 4,
+      });
+    const resize = new ResizeObserver(update);
+    resize.observe(rail);
+    rail.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => {
+      resize.disconnect();
+      rail.removeEventListener("scroll", update);
+    };
+  }, []);
 
   function toggleSave(id: string) {
     const exists = saved.includes(id);
@@ -491,12 +591,12 @@ export default function App() {
       localStorage.setItem("ovylus-saved", JSON.stringify(next));
       setToast(
         exists
-          ? "Konten dihapus dari simpanan."
-          : "Tersimpan. Temukan lagi di koleksi kamu.",
+          ? "Artikel dihapus dari simpanan."
+          : "Artikel tersimpan. Buka menu Simpanan untuk membacanya lagi.",
       );
     } catch {
       setToast(
-        "Simpanan aktif untuk sesi ini. Penyimpanan browser tidak tersedia.",
+        "Artikel disimpan untuk sesi ini. Penyimpanan browser tidak tersedia.",
       );
     }
   }
@@ -516,11 +616,7 @@ export default function App() {
   function navigate(item: string) {
     setActiveNav(item);
     setMenuOpen(false);
-    if (item === "Beranda" || item === "Berita AI") {
-      setQuery("");
-      setTopic("Semua");
-      setSavedOnly(false);
-    }
+    if (item === "Beranda" || item === "Berita AI") resetFilters();
     const ids: Record<string, string> = {
       Beranda: "beranda",
       "Berita AI": "jelajahi",
@@ -530,6 +626,11 @@ export default function App() {
       Kreator: "kreator",
     };
     scrollTo(ids[item]);
+  }
+  function resetFilters() {
+    setQuery("");
+    setTopic("Semua");
+    setSavedOnly(false);
   }
   function showSaved() {
     setSavedOnly((v) => !v);
@@ -550,6 +651,41 @@ export default function App() {
       />
     );
   }
+  function moveVideo(direction: number) {
+    const rail = railRef.current;
+    if (rail)
+      rail.scrollBy({
+        left:
+          direction *
+          (rail.querySelector("article")!.getBoundingClientRect().width +
+            parseFloat(getComputedStyle(rail).columnGap)),
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+  }
+  function tiltHero(event: React.PointerEvent<HTMLButtonElement>) {
+    if (
+      !window.matchMedia(
+        "(hover: hover) and (prefers-reduced-motion: no-preference)",
+      ).matches
+    )
+      return;
+    const target = event.currentTarget,
+      bounds = target.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5,
+      y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    cancelAnimationFrame(tiltFrame.current);
+    tiltFrame.current = requestAnimationFrame(() => {
+      target.style.setProperty("--tilt-x", `${-y * 4}deg`);
+      target.style.setProperty("--tilt-y", `${x * 4}deg`);
+    });
+  }
+  function resetTilt(event: React.PointerEvent<HTMLButtonElement>) {
+    cancelAnimationFrame(tiltFrame.current);
+    event.currentTarget.style.setProperty("--tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--tilt-y", "0deg");
+  }
 
   return (
     <>
@@ -557,7 +693,7 @@ export default function App() {
         Langsung ke konten
       </a>
       <header className="site-header">
-        <div className="header-inner">
+        <div className="header-inner container">
           <a
             className="brand"
             href="#beranda"
@@ -578,7 +714,7 @@ export default function App() {
             {navItems.map((item) => (
               <button
                 key={item}
-                className={activeNav === item ? "nav-link active" : "nav-link"}
+                className={`nav-link ${activeNav === item ? "active" : ""}`}
                 aria-current={activeNav === item ? "page" : undefined}
                 onClick={() => navigate(item)}
               >
@@ -588,14 +724,14 @@ export default function App() {
           </nav>
           <div className="header-actions">
             <button
-              className="icon-button"
+              className="search-toggle"
               aria-label="Buka pencarian"
               aria-expanded={searchOpen}
               onClick={() => setSearchOpen((v) => !v)}
             >
-              {searchOpen ? <X size={19} /> : <Search size={19} />}
+              <Search size={16} />
+              <span>Cari topik...</span>
             </button>
-            <span className="header-divider" />
             <button
               className="icon-button theme-button"
               aria-label={
@@ -605,7 +741,7 @@ export default function App() {
               }
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             >
-              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+              {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
             </button>
             <button
               className="icon-button mobile-menu-button"
@@ -624,35 +760,39 @@ export default function App() {
             id="mobile-navigation"
             aria-label="Navigasi mobile"
           >
-            {navItems.map((item) => (
+            {navItems.map((item, i) => (
               <button
                 key={item}
                 onClick={() => navigate(item)}
                 className={activeNav === item ? "active" : ""}
               >
-                {item}
-                <ArrowUpRight size={16} />
+                <span>
+                  <small aria-hidden="true">0{i + 1}</small>
+                  {item}
+                </span>
+                <ArrowUpRight size={20} />
               </button>
             ))}
             <button onClick={showSaved}>
-              Simpanan saya ({saved.length})<Bookmark size={16} />
+              <span>Simpanan saya ({saved.length})</span>
+              <Bookmark size={18} />
             </button>
           </nav>
         )}
         {searchOpen && (
           <form
-            className="search-panel"
+            className="search-panel container"
             role="search"
             onSubmit={(e) => {
               e.preventDefault();
               scrollTo("jelajahi");
             }}
           >
-            <Search size={22} />
+            <Search size={20} />
             <input
               ref={searchRef}
               aria-label="Cari konten AI"
-              placeholder="Apa yang ingin kamu jelajahi?"
+              placeholder="Cari artikel, topik, atau kreator"
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -661,7 +801,7 @@ export default function App() {
             />
             <button className="button button-dark" type="submit">
               Cari
-              <ArrowRight size={17} />
+              <ArrowRight size={16} />
             </button>
             <button
               type="button"
@@ -673,68 +813,30 @@ export default function App() {
             </button>
           </form>
         )}
+        <div className="reading-progress" aria-hidden="true" />
       </header>
 
       <main id="main">
-        <section className="intro container" id="beranda">
-          <div className="intro-topline">
-            <span className="eyebrow">
-              <span className="orange-dot" /> YOUR NEXT PERSPECTIVE
+        <section className="hero" id="beranda" aria-label="Konten pilihan">
+          <div className="hero-line container">
+            <span>
+              <span className="orange-dot" /> AI, dijelaskan dengan sederhana.
             </span>
-            <span className="edition">
-              EDISI EKSPLORASI <span>—</span> VOL. 01
-            </span>
+            <span>ARTIKEL · VIDEO · PANDUAN</span>
           </div>
-          <div className="intro-main">
-            <h1>
-              Selangkah
-              <br />
-              <span>di depan.</span>
-              <span className="headline-asterisk" aria-hidden="true">
-                <KineticStar />
+          <div className="hero-main container">
+            <div className="hero-copy" key={hero.id}>
+              <span className="eyebrow hero-category">
+                <span className="mini-line" />
+                PANDUAN PILIHAN
+                <span className="hero-count">0{slide + 1} / 03</span>
               </span>
-            </h1>
-            <div className="intro-description">
-              <p>
-                Dunia AI bergerak cepat.
+              <h1>
+                {heroHeadlines[slide][0]}
                 <br />
-                Temukan ide, wawasan, dan kemungkinan
-                <br className="desktop-break" /> baru untuk bergerak bersamanya.
-              </p>
-              <a href="#jelajahi" className="explore-link">
-                Mulai eksplorasi
-                <span>
-                  <ArrowDownRight size={19} />
-                </span>
-              </a>
-            </div>
-            <span className="intro-coordinate" aria-hidden="true">
-              EXPLORE / EVOLVE
-            </span>
-          </div>
-        </section>
-
-        <section className="hero container" aria-label="Konten pilihan">
-          <div className={`hero-frame hero-${hero.visual}`}>
-            <div className="hero-image" key={hero.id}>
-              <Artwork kind={hero.visual} priority />
-            </div>
-            <div className="hero-shade" />
-            <div className="hero-top">
-              <span className="hero-badge">
-                <span />
-                PILIHAN EDITOR
-              </span>
-              <span className="hero-issue">0{slide + 1} / 03</span>
-            </div>
-            <div className="hero-copy" key={`copy-${hero.id}`}>
-              <span className="hero-category">
-                {hero.topic}
-                <span />
-                PERSPEKTIF BARU
-              </span>
-              <h2>{hero.title}</h2>
-              <p>{hero.description}</p>
+                <span>{heroHeadlines[slide][1]}</span>
+              </h1>
+              <p>{heroSummaries[slide]}</p>
               <div className="hero-buttons">
                 <button
                   className="button button-orange"
@@ -750,113 +852,103 @@ export default function App() {
                   onClick={() => toggleSave(hero.id)}
                 >
                   <Bookmark
-                    size={18}
+                    size={17}
                     fill={saved.includes(hero.id) ? "currentColor" : "none"}
                   />
+                  <span>
+                    {saved.includes(hero.id) ? "Tersimpan" : "Simpan artikel"}
+                  </span>
                 </button>
               </div>
-            </div>
-            <div className="hero-bottom">
               <span className="hero-credit">
-                <span className="small-brand">O.</span>
-                {hero.author}
-                <i />
+                <Clock3 size={13} />
                 {hero.meta}
+                <span>·</span>
+                {hero.author}
               </span>
-              <div className="hero-pagination">
-                <div
-                  className="slide-dots"
-                  role="group"
-                  aria-label="Pilih artikel utama"
-                >
-                  {featured.map((article, i) => (
-                    <button
-                      key={article.id}
-                      aria-label={`Artikel utama ${i + 1}`}
-                      aria-pressed={slide === i}
-                      className={slide === i ? "active" : ""}
-                      onClick={() => setSlide(i)}
-                    />
-                  ))}
-                </div>
+            </div>
+            <div className="hero-visual">
+              <div className="hero-orbit" aria-hidden="true" />
+              <button
+                className="hero-media"
+                onPointerMove={tiltHero}
+                onPointerLeave={resetTilt}
+                onClick={() => setSelected(hero)}
+                aria-label={`Buka pilihan: ${hero.title}`}
+              >
+                <Artwork
+                  kind={hero.visual === "workflow" ? "studio" : hero.visual}
+                  priority
+                />
+                <span className="hero-image-index">OVYLUS / 0{slide + 1}</span>
+                <span className="hero-image-caption">
+                  <span>
+                    <small>{hero.topic}</small>
+                    <strong>
+                      {
+                        [
+                          "Dari chatbot ke AI agent",
+                          "Memahami model reasoning",
+                          "Alur kerja yang bisa kamu coba",
+                        ][slide]
+                      }
+                    </strong>
+                  </span>
+                  <span className="circle-arrow">
+                    <ArrowUpRight size={22} />
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+          <div className="hero-bottom container">
+            <div
+              className="hero-chapters"
+              role="group"
+              aria-label="Pilih artikel utama"
+            >
+              {[
+                "Mengenal AI agent",
+                "Cara AI menyelesaikan soal",
+                "Otomatisasi pekerjaan",
+              ].map((title, i) => (
                 <button
-                  className="hero-arrow"
-                  aria-label="Artikel utama sebelumnya"
-                  onClick={() => setSlide((slide + 2) % 3)}
+                  key={title}
+                  aria-label={`Artikel utama ${i + 1}`}
+                  aria-pressed={slide === i}
+                  className={slide === i ? "active" : ""}
+                  onClick={() => setSlide(i)}
                 >
-                  <ChevronLeft size={18} />
+                  <span>0{i + 1}</span>
+                  <strong>{title}</strong>
+                  <ArrowUpRight size={13} />
                 </button>
-                <button
-                  className="hero-arrow"
-                  aria-label="Artikel utama berikutnya"
-                  onClick={() => setSlide((slide + 1) % 3)}
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
+              ))}
+            </div>
+            <div className="hero-pagination">
+              <button
+                className="hero-arrow"
+                aria-label="Artikel utama sebelumnya"
+                onClick={() => setSlide((slide + 2) % 3)}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                className="hero-arrow"
+                aria-label="Artikel utama berikutnya"
+                onClick={() => setSlide((slide + 1) % 3)}
+              >
+                <ChevronRight size={18} />
+              </button>
             </div>
           </div>
         </section>
 
-        <div className="topic-strip container">
-          <span>
-            <Zap size={15} fill="currentColor" /> DALAM RADAR
-          </span>
-          <button
-            onClick={() => {
-              setTopic("Model AI");
-              scrollTo("jelajahi");
-            }}
-          >
-            Era AI agent
-            <ArrowUpRight size={13} />
-          </button>
-          <i />
-          <button
-            onClick={() => {
-              setTopic("Tools");
-              scrollTo("jelajahi");
-            }}
-          >
-            Tools untuk kreator
-            <ArrowUpRight size={13} />
-          </button>
-          <i />
-          <button
-            onClick={() => {
-              setTopic("Bisnis");
-              scrollTo("jelajahi");
-            }}
-          >
-            Kerja lebih cerdas
-            <ArrowUpRight size={13} />
-          </button>
-          <span className="strip-end">THE FUTURE IS A WORK IN PROGRESS.</span>
-        </div>
-
-        <section className="discovery section container" id="jelajahi">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow section-eyebrow">
-                01 / TEMUKAN PERSPEKTIF
-              </span>
-              <h2>
-                {savedOnly
-                  ? "Ruang simpan kamu."
-                  : isFiltered
-                    ? "Temukan yang kamu cari."
-                    : "Yang baru. Yang berarti."}
-              </h2>
-            </div>
-            <button
-              className={`text-button collection-button ${savedOnly ? "is-saved" : ""}`}
-              onClick={showSaved}
-              aria-pressed={savedOnly}
-            >
-              <Bookmark size={17} fill={savedOnly ? "currentColor" : "none"} />
-              Simpanan<span className="count-badge">{saved.length}</span>
-            </button>
-          </div>
+        <section
+          className="discovery section container"
+          id="jelajahi"
+          data-reveal
+        >
           <div className="filter-bar">
             <div
               className="topic-filters"
@@ -867,16 +959,40 @@ export default function App() {
                 <button
                   key={t}
                   className={`filter-chip ${topic === t ? "active" : ""}`}
-                  onClick={() => setTopic(t)}
                   aria-pressed={topic === t}
+                  onClick={() => setTopic(t)}
                 >
-                  {t === "Semua" && <Command size={14} />}
-                  {t}
+                  {t === "Semua" && <Command size={13} />}
+                  <span>{t === "Semua" ? "Semua topik" : t}</span>
                 </button>
               ))}
             </div>
+            <button
+              className={`text-button collection-button ${savedOnly ? "is-saved" : ""}`}
+              aria-pressed={savedOnly}
+              onClick={showSaved}
+            >
+              <Bookmark size={16} fill={savedOnly ? "currentColor" : "none"} />
+              <span>Simpanan</span>
+              <span className="count-badge">{saved.length}</span>
+            </button>
+          </div>
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow section-eyebrow">
+                <span className="orange-dot" />
+                BACA & PAHAMI
+              </span>
+              <h2>
+                {savedOnly
+                  ? "Artikel yang kamu simpan"
+                  : isFiltered
+                    ? "Hasil pencarian & filter"
+                    : "Artikel seputar AI"}
+              </h2>
+            </div>
             <label className="sort-control">
-              <SlidersHorizontal size={15} />
+              <SlidersHorizontal size={14} />
               <select
                 aria-label="Urutkan konten"
                 value={sort}
@@ -894,13 +1010,7 @@ export default function App() {
                 {query.trim() ? ` untuk “${query.trim()}”` : ""}
                 {topic !== "Semua" ? ` · ${topic}` : ""}
               </span>
-              <button
-                onClick={() => {
-                  setQuery("");
-                  setTopic("Semua");
-                  setSavedOnly(false);
-                }}
-              >
+              <button onClick={resetFilters}>
                 Reset filter
                 <X size={13} />
               </button>
@@ -913,22 +1023,15 @@ export default function App() {
               <Search size={30} />
               <h3>
                 {savedOnly
-                  ? "Ide bagus layak disimpan."
-                  : "Belum ada yang cocok."}
+                  ? "Belum ada artikel tersimpan"
+                  : "Tidak ada hasil yang cocok"}
               </h3>
               <p>
                 {savedOnly
-                  ? "Tekan ikon bookmark pada konten yang menarik. Koleksi kamu akan muncul di sini."
-                  : "Coba kata kunci lain atau jelajahi semua topik."}
+                  ? "Tekan ikon bookmark pada artikel atau video untuk menyimpannya di sini."
+                  : "Coba kata kunci yang lebih singkat atau pilih topik lain."}
               </p>
-              <button
-                className="button button-dark"
-                onClick={() => {
-                  setQuery("");
-                  setTopic("Semua");
-                  setSavedOnly(false);
-                }}
-              >
+              <button className="button button-dark" onClick={resetFilters}>
                 Jelajahi semua konten
                 <ArrowRight size={16} />
               </button>
@@ -937,113 +1040,210 @@ export default function App() {
           {!isFiltered && (
             <div className="section-bottom">
               <span className="demo-caption">
-                Edisi demo · Konten editorial contoh
+                Konten contoh untuk pratinjau desain.
               </span>
               <button
                 className="text-button"
                 onClick={() => setExpanded((v) => !v)}
               >
-                {expanded ? "Tampilkan lebih sedikit" : "Lihat semua berita"}
-                {expanded ? (
-                  <ChevronLeft size={16} />
-                ) : (
-                  <ArrowRight size={16} />
-                )}
+                {expanded ? "Tampilkan lebih sedikit" : "Lihat semua artikel"}
+                <ArrowRight size={16} />
               </button>
             </div>
           )}
         </section>
 
-        <section className="video-section section container" id="video">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow section-eyebrow">
-                02 / TONTON. PAHAMI. TERINSPIRASI.
-              </span>
-              <h2>
-                Perspektif dalam gerak<span className="orange-text">.</span>
-              </h2>
-            </div>
-            <span className="section-aside">
-              <span className="live-dot" />
-              KURASI VIDEO AI
-            </span>
-          </div>
-          <div className="video-grid">
-            {articles.filter((a) => a.category === "Video AI").map(card)}
-          </div>
-        </section>
-
-        <section className="automation-section container" id="automation">
-          <div className="automation-panel">
-            <div className="automation-intro">
-              <span className="eyebrow">
-                <Zap size={14} />
-                03 / WORK SMARTER
-              </span>
-              <h2>
-                Kurangi repetisi.
-                <br />
-                Perbesar <span>potensi.</span>
-              </h2>
-              <p>
-                Biarkan alur kerja mengurus rutinitas.
-                <br />
-                Sisakan energi untuk hal yang berarti.
-              </p>
-              <button
-                className="button button-orange"
-                onClick={() =>
-                  setSelected(articles.find((a) => a.id === "workflow")!)
-                }
-              >
-                Temukan alur pertamamu
-                <ArrowUpRight size={17} />
-              </button>
-              <div className="automation-signature">
-                <Workflow size={18} />
-                <span>BUILT FOR YOUR NEXT MOVE.</span>
+        <section className="video-section" id="video">
+          <div className="container" data-reveal>
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow section-eyebrow">
+                  <span className="orange-dot" />
+                  BELAJAR LEWAT VIDEO
+                </span>
+                <h2>
+                  Lihat cara kerjanya<span className="orange-text">.</span>
+                </h2>
+                <p className="section-description">
+                  Penjelasan dari kreator pilihan, dengan ringkasan berbahasa
+                  Indonesia.
+                </p>
+              </div>
+              <div className="rail-controls">
+                <button
+                  className="hero-arrow"
+                  disabled={!railState.previous}
+                  aria-label="Video sebelumnya"
+                  onClick={() => moveVideo(-1)}
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  className="hero-arrow"
+                  disabled={!railState.next}
+                  aria-label="Video berikutnya"
+                  onClick={() => moveVideo(1)}
+                >
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </div>
-            <div className="automation-list">
-              {articles
-                .filter((a) => a.category === "Automation")
-                .map((article, i) => (
-                  <button
-                    className="automation-item"
-                    key={article.id}
-                    onClick={() => setSelected(article)}
-                  >
-                    <span className="automation-number">0{i + 1}</span>
-                    <span>
-                      <small>{article.label}</small>
-                      <strong>{article.title}</strong>
-                      <span className="automation-meta">
-                        {article.meta}
-                        <span>↗</span>
-                      </span>
-                    </span>
-                    <span className="automation-item-arrow">
-                      <ArrowUpRight size={20} />
-                    </span>
-                  </button>
-                ))}
+            <div
+              className="video-grid"
+              ref={railRef}
+              tabIndex={0}
+              role="region"
+              aria-label="Daftar video, dapat digeser"
+            >
+              {articles.filter((a) => a.category === "Video AI").map(card)}
             </div>
-            <span className="automation-decoration" aria-hidden="true">
-              <KineticStar />
+            <span className="rail-hint">
+              <ArrowRight size={13} />
+              Geser untuk melihat video berikutnya
             </span>
           </div>
         </section>
 
-        <section className="learn-section section container" id="belajar">
+        <section
+          className="automation-section section container"
+          id="automation"
+          data-reveal
+        >
           <div className="section-heading">
             <div>
               <span className="eyebrow section-eyebrow">
-                04 / SELALU ADA LANGKAH PERTAMA
+                <span className="orange-dot" />
+                AUTOMATION
               </span>
-              <h2>Rasa ingin tahu, jadi bisa.</h2>
+              <h2>Kurangi pekerjaan berulang.</h2>
             </div>
-            <span className="section-aside">BELAJAR DENGAN RITMEMU.</span>
+            <p className="heading-note">
+              Contoh alur kerja yang bisa kamu pelajari
+              <br className="desktop-break" /> dan sesuaikan dengan kebutuhanmu.
+            </p>
+          </div>
+          <div className="automation-grid">
+            {articles
+              .filter((a) => a.category === "Automation")
+              .map((article, i) => (
+                <button
+                  className={`automation-card ${i === 1 ? "featured" : ""}`}
+                  key={article.id}
+                  onClick={() => setSelected(article)}
+                >
+                  <div className="automation-card-top">
+                    <span>
+                      {
+                        [
+                          "PENCATATAN DATA",
+                          "DOKUMEN & RISET",
+                          "OPERASIONAL BISNIS",
+                        ][i]
+                      }
+                    </span>
+                    {i === 0 ? (
+                      <Workflow size={19} />
+                    ) : i === 1 ? (
+                      <FileText size={19} />
+                    ) : (
+                      <Layers3 size={19} />
+                    )}
+                  </div>
+                  <div className="workflow-preview" aria-hidden="true">
+                    {i === 0 ? (
+                      <>
+                        <span>
+                          <FileText size={18} />
+                          <small>Formulir</small>
+                        </span>
+                        <i />
+                        <span>
+                          <Layers3 size={18} />
+                          <small>Data</small>
+                        </span>
+                        <i />
+                        <span>
+                          <Check size={18} />
+                          <small>Tercatat</small>
+                        </span>
+                      </>
+                    ) : i === 1 ? (
+                      <div className="document-preview">
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <span className="doc-check">
+                          <Check size={16} />
+                          Sumber terhubung
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="checklist-preview">
+                        <span>
+                          <Check size={14} /> Catat tugas berulang
+                        </span>
+                        <span>
+                          <Check size={14} /> Hitung waktu pengerjaan
+                        </span>
+                        <span>
+                          <Check size={14} /> Pilih satu untuk dicoba
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <h3>{article.title}</h3>
+                  <p>{article.description}</p>
+                  <div className="automation-tags">
+                    {(i === 0
+                      ? ["n8n", "Spreadsheet", "Pemula"]
+                      : i === 1
+                        ? ["Ringkasan", "Verifikasi sumber"]
+                        : ["Pemetaan tugas", "Bisnis"]
+                    ).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="automation-card-bottom">
+                    <span>Baca panduan</span>
+                    <ArrowUpRight size={20} />
+                  </div>
+                </button>
+              ))}
+          </div>
+        </section>
+
+        <section
+          className="learn-section section container"
+          id="belajar"
+          data-reveal
+        >
+          <div className="learn-intro">
+            <span className="eyebrow section-eyebrow">
+              <span className="orange-dot" />
+              BELAJAR AI
+            </span>
+            <h2>
+              Mulai dari dasar.
+              <br />
+              Lanjutkan dengan praktik.
+            </h2>
+            <p>
+              Tiga panduan singkat untuk mengenal AI, menulis instruksi, dan
+              merancang agent pertama.
+            </p>
+            <div className="learning-mark" aria-hidden="true">
+              <span className="book-spine" />
+              <BookOpen size={58} strokeWidth={1.1} />
+              <span className="learning-mark-label">
+                CATATAN
+                <br />
+                BELAJAR AI
+              </span>
+              <span className="learning-star">
+                <KineticStar />
+              </span>
+            </div>
           </div>
           <div className="learn-grid">
             {articles
@@ -1054,43 +1254,44 @@ export default function App() {
                   key={article.id}
                   onClick={() => setSelected(article)}
                 >
-                  <div className="learn-card-top">
-                    <span className="learn-number">
-                      0{i + 1}
-                      <span>/</span>
-                    </span>
-                    <span className="level-badge">{article.label}</span>
-                  </div>
-                  <div>
-                    <h3>{article.title}</h3>
-                    <p>{article.description}</p>
-                  </div>
-                  <div className="learn-card-bottom">
-                    <span>
-                      <Clock3 size={14} />
+                  <span className="learn-number">0{i + 1}</span>
+                  <span className="learn-content">
+                    <span className="level-badge">
+                      {article.label}
+                      <span> / </span>
                       {article.meta}
                     </span>
-                    <span className="learn-arrow">
-                      <ArrowUpRight size={19} />
-                    </span>
-                  </div>
+                    <h3>{article.title}</h3>
+                    <p>{article.description}</p>
+                  </span>
+                  <span className="learn-arrow">
+                    <ArrowUpRight size={20} />
+                  </span>
                 </button>
               ))}
           </div>
         </section>
 
-        <section className="creators-section section container" id="kreator">
+        <section
+          className="creators-section section container"
+          id="kreator"
+          data-reveal
+        >
           <div className="section-heading">
             <div>
               <span className="eyebrow section-eyebrow">
-                05 / IDE HEBAT PUNYA SUARA
+                <span className="orange-dot" />
+                KREATOR & KOMUNITAS
               </span>
-              <h2>Kenali pemikir di baliknya.</h2>
+              <h2>Belajar dari yang membagikan ilmunya.</h2>
             </div>
-            <span className="section-aside">KREATOR & KOMUNITAS PILIHAN</span>
+            <p className="heading-note">
+              Kanal pilihan untuk memperdalam
+              <br className="desktop-break" /> pemahaman tentang AI.
+            </p>
           </div>
           <div className="creators-grid">
-            {creators.map((creator) => (
+            {creators.map((creator, i) => (
               <a
                 className="creator-card"
                 key={creator.name}
@@ -1098,53 +1299,79 @@ export default function App() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
+                <div className="creator-card-top">
+                  <span className="creator-index">0{i + 1}</span>
+                  <span>{creator.mark}</span>
+                </div>
                 <div
                   className={`creator-avatar avatar-${creator.color}`}
                   aria-hidden="true"
                 >
                   {creator.initials}
                 </div>
-                <div className="creator-copy">
-                  <span>{creator.mark}</span>
-                  <h3>{creator.name}</h3>
-                  <p>{creator.role}</p>
+                <h3>{creator.name}</h3>
+                <p>{creator.role}</p>
+                <div className="creator-link">
+                  {i === 2 ? "Buka materi belajar" : "Buka kanal YouTube"}
+                  <ArrowUpRight size={17} />
                 </div>
-                <ArrowUpRight className="creator-arrow" size={19} />
-                <span className="sr-only"> (buka kanal di tab baru)</span>
+                <span className="sr-only"> (tab baru)</span>
               </a>
             ))}
           </div>
         </section>
 
-        <section
-          className="trending-section container"
-          aria-label="Pilihan populer"
-        >
-          <div className="trending-heading">
+        <section className="starter-section container" data-reveal>
+          <div className="starter-intro">
             <span className="eyebrow">
               <span className="orange-dot" />
-              ON THE RADAR
+              PILIH BACAAN PERTAMAMU
             </span>
             <h2>
-              Layak kamu
+              Ingin belajar apa
               <br />
-              jelajahi.
+              hari ini?
             </h2>
-            <ArrowDownRight size={35} strokeWidth={1.5} />
+            <p>Pilih kebutuhanmu. Kami bantu temukan bacaan yang sesuai.</p>
           </div>
-          <div className="trending-list">
-            {[articles[0], articles[1], articles[8]].map((a, i) => (
-              <button key={a.id} onClick={() => setSelected(a)}>
-                <span className="trend-number">0{i + 1}</span>
-                <span>
-                  <small>
-                    {a.category} <span> / </span> {a.topic}
-                  </small>
-                  <strong>{a.title}</strong>
-                </span>
-                <ArrowUpRight size={18} />
-              </button>
-            ))}
+          <div className="starter-content">
+            <div
+              className="interest-options"
+              role="group"
+              aria-label="Pilih kebutuhan belajar"
+            >
+              {interests.map((item) => (
+                <button
+                  key={item.id}
+                  aria-pressed={interest === item.id}
+                  className={interest === item.id ? "active" : ""}
+                  onClick={() => setInterest(item.id)}
+                >
+                  <span className="interest-radio">
+                    {interest === item.id && <Check size={12} />}
+                  </span>
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <div
+              className="recommendations"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <span>BACAAN UNTUKMU</span>
+              {interests
+                .find((i) => i.id === interest)!
+                .ids.map((id) => {
+                  const article = articles.find((a) => a.id === id)!;
+                  return (
+                    <button key={id} onClick={() => setSelected(article)}>
+                      <span>{article.title}</span>
+                      <ArrowUpRight size={18} />
+                    </button>
+                  );
+                })}
+            </div>
           </div>
         </section>
       </main>
@@ -1152,54 +1379,55 @@ export default function App() {
       <footer className="site-footer">
         <div className="container">
           <div className="footer-main">
-            <div>
-              <span className="eyebrow">
-                <span className="orange-dot" />
-                STAY CURIOUS. KEEP MOVING.
+            <div className="footer-about">
+              <span className="footer-wordmark">
+                OVYLUS<span> PORTAL</span>
+                <i />
               </span>
-              <h2>
-                Masa depan
-                <br />
-                dimulai dari <span>rasa ingin tahu.</span>
-              </h2>
+              <p>
+                Artikel, video, dan panduan praktis untuk memahami AI dan
+                menggunakannya dalam pekerjaan sehari-hari.
+              </p>
               <button
                 className="footer-explore"
                 onClick={() => {
-                  setQuery("");
-                  setTopic("Semua");
-                  setSavedOnly(false);
+                  resetFilters();
                   scrollTo("jelajahi");
                 }}
               >
-                Terus eksplorasi
-                <ArrowUpRight size={22} />
+                Jelajahi artikel
+                <ArrowUpRight size={17} />
               </button>
             </div>
             <div className="footer-links">
-              <span>JELAJAHI OVYLUS</span>
+              <span>JELAJAHI</span>
               {navItems.slice(1).map((item) => (
                 <button key={item} onClick={() => navigate(item)}>
                   {item}
-                  <ArrowUpRight size={14} />
                 </button>
               ))}
             </div>
-          </div>
-          <div className="footer-bottom">
-            <span className="footer-wordmark">
-              ovylus<span>®</span>
-            </span>
-            <span>© {new Date().getFullYear()} Ovylus Portal</span>
-            <div>
-              <button onClick={() => setInfo("Tentang Ovylus")}>Tentang</button>
+            <div className="footer-links">
+              <span>TENTANG PORTAL</span>
+              <button onClick={() => setInfo("Tentang Ovylus")}>
+                Tentang Ovylus
+              </button>
               <button onClick={() => setInfo("Kebijakan editorial")}>
-                Editorial
+                Kebijakan editorial
               </button>
               <button onClick={() => setInfo("Privasi")}>Privasi</button>
-              <a href="#beranda" aria-label="Kembali ke atas">
-                <ArrowDown className="back-top" size={17} />
-              </a>
+              <button onClick={showSaved}>
+                Simpanan saya ({saved.length})
+              </button>
             </div>
+          </div>
+          <div className="footer-bottom">
+            <span>© {new Date().getFullYear()} Ovylus Portal</span>
+            <span>Dirancang untuk pembaca yang ingin memahami AI.</span>
+            <a href="#beranda" aria-label="Kembali ke atas">
+              Kembali ke atas
+              <ArrowUpRight size={16} />
+            </a>
           </div>
         </div>
       </footer>
@@ -1223,15 +1451,14 @@ export default function App() {
             {info === "Privasi" ? (
               <>
                 <p>
-                  Homepage ini menyimpan pilihan tema dan daftar konten yang
-                  kamu simpan di penyimpanan lokal browser. Data tersebut tetap
-                  berada di perangkatmu; tidak ada akun, analitik, atau formulir
-                  pengumpulan data pada versi ini.
+                  Halaman ini menyimpan pilihan tema dan daftar artikel di
+                  browser pada perangkatmu. Versi ini tidak memiliki akun,
+                  analitik, atau formulir pengumpulan data.
                 </p>
                 <p>
-                  Video dari YouTube baru dimuat setelah kamu menekan tombol
-                  putar. Tautan eksternal dan pemutar video mengikuti kebijakan
-                  privasi penyedia masing-masing.
+                  Video YouTube baru dimuat setelah kamu menekan putar. Layanan
+                  tersebut dan tautan eksternal memiliki kebijakan privasi
+                  masing-masing.
                 </p>
                 <button
                   className="button button-dark"
@@ -1240,7 +1467,7 @@ export default function App() {
                       localStorage.removeItem("ovylus-saved");
                       localStorage.removeItem("ovylus-theme");
                     } catch {
-                      /* Current state can still be cleared. */
+                      /* Local state can still be cleared. */
                     }
                     setSaved([]);
                     setTheme("light");
@@ -1255,33 +1482,33 @@ export default function App() {
             ) : info === "Kebijakan editorial" ? (
               <>
                 <p>
-                  Ovylus mengutamakan informasi yang jelas, sumber yang dapat
-                  ditelusuri, dan rasa ingin tahu yang bertanggung jawab.
+                  Artikel harus menjelaskan topik dengan bahasa yang mudah
+                  dipahami, menyertakan sumber, dan membedakan fakta dari
+                  pendapat.
                 </p>
                 <p>
-                  Versi homepage ini adalah demonstrasi desain. Artikel dan
-                  ringkasan merupakan konten contoh, bukan berita terkini. Video
-                  tertaut berasal dari kreator aslinya. Gambar robot dan bentuk
-                  krom dibuat dengan AI untuk kebutuhan visual.
+                  Versi ini berisi konten contoh untuk pratinjau desain. Artikel
+                  bukan laporan berita terkini. Video berasal dari kanal kreator
+                  yang ditautkan. Gambar ilustrasi dibuat dengan AI; gambar
+                  tersebut bukan dokumentasi peristiwa atau orang tertentu.
                 </p>
                 <p>
-                  Saat portal diterbitkan sebagai media, setiap artikel perlu
-                  melalui verifikasi fakta, pencantuman tanggal, dan peninjauan
-                  editorial. Konten berbayar harus diberi label Sponsored atau
-                  Promoted.
+                  Sebelum terbit sebagai media, artikel perlu diperiksa faktanya
+                  dan dilengkapi tanggal publikasi. Konten berbayar harus diberi
+                  label yang jelas.
                 </p>
               </>
             ) : (
               <>
                 <p>
-                  Ovylus Portal adalah ruang eksplorasi AI berbahasa Indonesia.
-                  Tempat menemukan perspektif, memahami teknologi, dan mengubah
-                  rasa ingin tahu menjadi langkah nyata.
+                  Ovylus Portal menyediakan artikel, video pilihan, dan panduan
+                  praktis tentang AI dalam bahasa Indonesia.
                 </p>
                 <p>
-                  Jelajahi berita, video pilihan, ide automation, panduan
-                  belajar, serta kreator dan komunitas AI. Selangkah di depan,
-                  bersama.
+                  Kamu bisa mulai dari penjelasan dasar, mencari alat untuk
+                  pekerjaan tertentu, atau mempelajari cara mengotomatisasi
+                  tugas. Setiap bacaan menyertakan sumber untuk dipelajari lebih
+                  lanjut.
                 </p>
               </>
             )}
